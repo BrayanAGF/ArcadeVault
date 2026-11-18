@@ -25,6 +25,9 @@ Arcade Vault: plataforma para jugar online y competir por la mayor cantidad de p
 - Todo en español: textos de UI, comentarios, mensajes de commit y specs. Identificadores (variables, funciones, archivos) en inglés.
 - `<html lang>` should be `es`.
 
+## Skills
+Usa siempre /frontend-design para diseñar la interfaz de usuario.
+
 ## Git
 
 - Conventional Commits (`feat:`, `fix:`, `chore:`, …) with Spanish descriptions, e.g. `feat: agregar tabla de puntuaciones`.

@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import { Footer } from "@/components/footer";
+import { Nav } from "@/components/nav";
+import { SessionProvider } from "@/lib/session";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -29,7 +32,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {/* Fondo decorativo: cuadrícula en perspectiva + scanlines, y ruido */}
         <div className="av-bg" />
         <div className="av-noise" />
-        <div id="root">{children}</div>
+        <div id="root">
+          <SessionProvider>
+            <Nav />
+            <main className="av-main">{children}</main>
+            <Footer />
+          </SessionProvider>
+        </div>
       </body>
     </html>
   );

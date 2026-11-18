@@ -92,7 +92,7 @@ Convenciones:
 Antes de escribir código de rutas, leer en `node_modules/next/dist/docs/` las guías de rutas dinámicas, `generateStaticParams`, `not-found` y `migrating-to-cache-components.md`.
 
 1. Crear `lib/games.ts` con tipos, `GAMES`, `CATS`, `seededScores` y `getGame`, copiando valores de `data.jsx`. La home sigue mostrando el placeholder.
-2. Crear `lib/session.tsx` (`SessionProvider`, `useSession`; lee `av_user` en un `useEffect` tras montar, con `try/catch`). Crear `components/footer.tsx`. Envolver el contenido de `#root` en el layout con `SessionProvider` + `Footer`, y mover `<main className="av-main">` al layout (quitarlo de `app/page.tsx`). Prueba manual: el footer se ve bajo el hero.
+2. Crear `lib/session.tsx` (`SessionProvider`, `useSession`; lee `av_user` con `useSyncExternalStore`, con snapshot de servidor `null` y `try/catch`). Crear `components/footer.tsx`. Envolver el contenido de `#root` en el layout con `SessionProvider` + `Footer`, y mover `<main className="av-main">` al layout (quitarlo de `app/page.tsx`). Prueba manual: el footer se ve bajo el hero.
 3. Crear `components/nav.tsx` (`"use client"`): logo y enlaces con `next/link`, estado activo con `usePathname` (`/` y `/juegos/*` activan "Biblioteca"; `/salon` activa "Salón de la Fama"), botón `Iniciar Sesión` → `/auth` o `{user.name} ▾` que ejecuta `signOut`, hamburguesa que abre `.av-mobile-panel` y `.av-mobile-backdrop`; el panel se cierra al navegar o al pulsar el fondo. Añadirlo al layout. Prueba manual: navbar visible y panel móvil funcional en ancho < 760px.
 4. Biblioteca: `components/game-card.tsx` (`"use client"`, tilt con `onMouseMove`/`onMouseLeave`, clic en la tarjeta → `router.push`, botón `JUGAR` como `Link` a `/juegos/[id]` con color según `game.color`) y `components/library.tsx` (`"use client"`, hero, búsqueda, chips, grilla, estado vacío). `app/page.tsx` renderiza `<Library />`. Prueba manual: filtrar por "PUZZLE" deja solo CAÍDA; buscar "zzz" muestra "NO HAY RESULTADOS".
 5. Detalle: `app/juegos/[id]/page.tsx` (Server Component) con `generateStaticParams`, `generateMetadata` y `notFound()` si `getGame` devuelve `undefined`. Botones `▶  JUGAR AHORA` → `/juegos/[id]/jugar` y `VOLVER AL VAULT` → `/` como `Link` con clases `.btn`. Crear `app/not-found.tsx` con estilo arcade. Prueba manual: `/juegos/caida` muestra el detalle; `/juegos/nada` muestra la 404 con estilo.
@@ -130,7 +130,8 @@ Antes de escribir código de rutas, leer en `node_modules/next/dist/docs/` las g
 - **No:** SPA con estado en el hash como la plantilla. Desaprovecha el router y complica el SEO.
 - **Sí:** rutas en español (`juegos`, `jugar`, `salon`), coherentes con la UI.
 - **Sí:** sesión mock en `localStorage["av_user"]` vía contexto cliente. Replica la plantilla y permite ver los estados con y sin usuario.
-- **Sí:** leer `av_user` en `useEffect` tras montar. Evita discrepancias de hidratación entre servidor y cliente.
+- **Sí:** leer `av_user` con `useSyncExternalStore` y snapshot de servidor `null` (decidido durante la implementación). Evita discrepancias de hidratación y cumple la regla `react-hooks/set-state-in-effect`.
+- **No:** `setState` dentro de `useEffect` tras montar. Lo prohíbe la regla de lint de `eslint-config-next` 16.
 - **No:** autenticación real. Va en su propia spec.
 - **Sí:** simulación del reproductor como la plantilla (intervalo de puntuación, pausa, fin, modal).
 - **No:** reproductor estático. Se pierde la demo de los estados del HUD y del modal.

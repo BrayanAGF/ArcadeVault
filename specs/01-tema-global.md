@@ -115,6 +115,8 @@ Estructura del layout raíz:
 - **Sí:** `--font-mono` de Tailwind apunta a la fuente mono del tema (JetBrains Mono), en lugar de la mono por defecto de Tailwind.
 - **Sí:** copiar todo `styles.css` a un solo `app/globals.css`. Es más fácil compararlo con el original.
 - **No:** dividir el CSS por secciones. No aporta nada mientras exista un único tema.
+- **Sí:** excluir `references/**` del lint en `eslint.config.mjs` (decidido durante la implementación). Los prototipos usan React y componentes como globales, y rompían `/verify` sin ser código de la app.
+- **No:** corregir los prototipos para que pasen el lint. Son material de referencia, no se ejecutan en la app.
 - **Sí:** placeholder mínimo en `app/page.tsx`. La página de ejemplo quedaría rota visualmente con el tema nuevo.
 
 ## Riesgos
